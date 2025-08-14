@@ -42,20 +42,27 @@
   .note{font-size:10px; color:var(--note); display:flex; align-items:center; justify-content:center}
   /* 粗框線 */
   .grid::before, .grid::after{content:""; position:absolute; left:0; right:0; top:0; bottom:0; pointer-events:none}
-  .grid::before{
-    background:
-      linear-gradient(var(--bold),var(--bold)) 0 0/100% 2px,
-      linear-gradient(var(--bold),var(--bold)) 0 100%/100% 2px,
-      linear-gradient(var(--bold),var(--bold)) 0 0/2px 100%,
-      linear-gradient(var(--bold),var(--bold)) 100% 0/2px 100%;
+  
+  /* 強制白底，避免深色模式把底色反轉 */
+  html, body, .board, .grid, .cell { background:#fff; }
+  
+  /* 每格自己畫邊框（細線） */
+  .cell{
+    border:1px solid #cfd2da;
+    background:#fff;           /* ← 白底 */
+    display:flex; align-items:center; justify-content:center;
+    font-weight:600; font-size:22px; color:var(--user);
+    position:relative; user-select:none; cursor:pointer;
   }
-  .grid::after{
-    background:
-      linear-gradient(var(--bold),var(--bold)) 0 calc(100%/3) /100% 2px,
-      linear-gradient(var(--bold),var(--bold)) 0 calc(200%/3) /100% 2px,
-      linear-gradient(90deg,var(--bold),var(--bold)) calc(100%/3) 0 /2px 100%,
-      linear-gradient(90deg,var(--bold),var(--bold)) calc(200%/3) 0 /2px 100%;
-  }
+  
+  /* 3×3 粗線（用 r/c 資訊來決定） */
+  .cell[data-r="0"], .cell[data-r="3"], .cell[data-r="6"]{ border-top:2px solid #000; }
+  .cell[data-c="0"], .cell[data-c="3"], .cell[data-c="6"]{ border-left:2px solid #000; }
+  .cell[data-r="8"]{ border-bottom:2px solid #000; }
+  .cell[data-c="8"]{ border-right:2px solid #000; }
+  
+  /* 其餘樣式保留 */
+
 
   .pad{margin:12px 4px 0; display:grid; grid-template-columns:repeat(9,1fr); gap:6px}
   .pad button{
